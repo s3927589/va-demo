@@ -1,0 +1,29 @@
+{
+	"intents": [
+		{
+			"tag": "chao_hoi",
+			"patterns": ["chào", "xin chào", "này", "hey"],
+			"responses": ["Xin chào bạn!", "Tôi có thể giúp gì cho bạn?"]
+		},
+		{
+			"tag": "gioi_thieu",
+			"patterns": ["hãy giới thiệu về công ty", "giới thiệu công ty isuzu", "cho tôi biết thêm về công ty", "tôi muốn biết thông tin của công ty"],
+			"responses": ["Công ty trách nhiệm hữu hạn ô tô isuzu việt nam là doanh nghiệp liên doanh việt nam nhật bản, hoạt động trong lĩnh vực nhập khẩu, lắp ráp và phân phối đa dạng các sản phẩm xe thương mại và xe ô tô"]
+		},
+		{
+			"tag": "hien_danh_sach",
+			"patterns": ["hiện danh sách ô tô", "tôi muốn xem các loại ô tô", "tôi muốn xem dánh sách ô tô", "hiển thị các loại ô tô"],
+			"responses": ["đây là danh sách các loại ô tô của hệ thống"]
+		},
+		{
+			"tag": "thong_tin_o_to",
+			"patterns": ["hiện thông tin ô tô", "hiện thông tin ô tô", "Cho tôi xem xe", "Xem thông tin xe"],
+			"responses": ["thông tin xe "]
+		},
+		{
+			"tag": "them_o_to",
+			"patterns": ["Thêm xe vào hệ thống", "Tôi muốn thêm chiếc ô tô này", "Thêm xe này cho tôi", "Thêm ô tô nhé"],
+			"responses": ["Đã thêm xe "]
+		}
+	]
+}

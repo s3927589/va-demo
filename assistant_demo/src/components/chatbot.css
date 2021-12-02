@@ -1,0 +1,28 @@
+.chatbot-container {
+	position: fixed;
+	bottom: 50px;
+	right: 50px;
+	text-align: right;
+}
+
+.chatbot-prompt {
+	display: block;
+	padding: 10px;
+	background-color: white;
+	color: #0250b0;
+	border: 1px solid #3486eb;
+	border-radius: 10px;
+	margin-bottom: 10px;
+	text-align: center;
+}
+
+.user-prompt {
+	display: block;
+	padding: 10px;
+	background-color: white;
+	color: #cc3802;
+	border: 1px solid #f26430;
+	border-radius: 10px;
+	margin-bottom: 10px;
+	text-align: center;
+}
