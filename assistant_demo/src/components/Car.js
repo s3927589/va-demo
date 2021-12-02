@@ -18,6 +18,7 @@ const Car = (props) => {
 	const car = myCar ? (
 		<div className="car">
 			<h4 className="center">{myCar.title}</h4>
+			<img src={myCar.img} width="300" />
 			{myCar.body}
 			<div className="center">
 				<button className="btn red" onClick={handleAdd}>

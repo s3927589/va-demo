@@ -17,7 +17,7 @@
 		},
 		{
 			"tag": "thong_tin_o_to",
-			"patterns": ["hiện thông tin ô tô", "hiện thông tin ô tô", "Cho tôi xem xe", "Xem thông tin xe"],
+			"patterns": ["hiện thông tin ô tô", "Cho tôi xem xe", "Xem thông tin xe"],
 			"responses": ["thông tin xe "]
 		},
 		{
