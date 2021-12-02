@@ -15,7 +15,7 @@ app.use(cors({
 
 app.use(bodyParser.json())
 
-// on the request to root (localhost:3000/)
+// on the request to root (localhost:5000/)
 app.get('/', function (req, res) {
     res.send('Minh Anh server');
 });

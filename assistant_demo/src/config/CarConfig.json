@@ -1,0 +1,20 @@
+{
+	"cars": [
+		{
+			"id": 1,
+			"name": "Hyundai Accent"
+		},
+		{
+			"id": 2,
+			"name": "Hyundai Elantra Sport"
+		},
+		{
+			"id": 3,
+			"name": "Hyundai Solati"
+		},
+		{
+			"id": 4,
+			"name": "Hyundai Tucson"
+		}
+	]
+}

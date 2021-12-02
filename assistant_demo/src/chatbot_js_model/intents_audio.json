@@ -3,27 +3,27 @@
 		{
 			"tag": "chao_hoi",
 			"patterns": ["chào", "xin chào", "này", "hey"],
-			"responses": ["Xin chào bạn! Tôi có thể giúp gì cho bạn?"]
+			"responses": ["chao_hoi"]
 		},
 		{
 			"tag": "gioi_thieu",
 			"patterns": ["hãy giới thiệu về công ty", "giới thiệu công ty isuzu", "cho tôi biết thêm về công ty", "tôi muốn biết thông tin của công ty", "xem thông tin công ty", "cho tôi xem thông tin công ty"],
-			"responses": ["Hyundai Đại Lý Uỷ Quyền Chính Thức của Hyundai Thành Công Việt Nam"]
+			"responses": ["gioi_thieu"]
 		},
 		{
 			"tag": "hien_danh_sach",
 			"patterns": ["hiện danh sách ô tô", "tôi muốn xem các loại ô tô", "tôi muốn xem dánh sách ô tô", "hiển thị các loại ô tô", "cho tôi xem danh sách ô tô", "cho tôi xem danh sách xe"],
-			"responses": ["đây là danh sách các loại ô tô của hệ thống"]
+			"responses": ["danh_sach_xe"]
 		},
 		{
 			"tag": "thong_tin_o_to",
 			"patterns": ["hiện thông tin ô tô", "hiện thông tin xe", "Cho tôi xem xe", "Xem thông tin xe", "tôi muốn xem", "xem thông tin", "tôi muốn xem xe"],
-			"responses": ["Thông tin ô tô "]
+			"responses": ["thong_tin_xe"]
 		},
 		{
 			"tag": "them_o_to",
 			"patterns": ["Thêm xe vào hệ thống", "Tôi muốn thêm chiếc ô tô này", "Thêm xe này cho tôi", "Thêm ô tô nhé", "thêm xe này vào kho", "tối muốn thêm xe này vào kho của tôi", "mua xe này", "tôi muốn mua xe này", "cho tôi mua chiếc ô tô này", "tôi muốn mua chiếc ô tô này"],
-			"responses": ["Đã thêm xe "]
+			"responses": ["them_xe"]
 		}
 	]
 }

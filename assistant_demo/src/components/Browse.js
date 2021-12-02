@@ -20,8 +20,8 @@ const Browse = ({ cars }) => {
 		<div className="center">No cars yet</div>
 	);
 	return (
-		<div className="container home">
-			<h4 className="center blue-text text-darken-2">Danh sách ô tô</h4>
+		<div className="my-container home">
+			<h4 className="center blue-text text-darken-2">Danh sách ô tô</h4><br/>
 			<div className="flex-row">
 			{carList}
 			</div>

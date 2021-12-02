@@ -1,6 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { useParams, useNavigate } from 'react-router-dom'
+import { addCar } from '../redux/actionCreators'
 import PropTypes from 'prop-types'
 import TaskHandler from './TaskHandler'
 
@@ -12,7 +13,8 @@ const Car = (props) => {
 
 	const handleAdd = () => {
 		// go back to home page
-		navigate('/')
+		props.addCar(myCar)
+		navigate('/my-cars')
 	}
 
 	const car = myCar ? (
@@ -20,7 +22,7 @@ const Car = (props) => {
 			<h4 className="center">{myCar.title}</h4>
 			<img src={myCar.img} width="300" />
 			{myCar.body}
-			<div className="center">
+			<div className="center padding">
 				<button className="btn red" onClick={handleAdd}>
 				 	Thêm vào kho
 				</button>
@@ -41,6 +43,7 @@ const Car = (props) => {
 Car.propTypes = {
 	history: PropTypes.object,
 	cars: PropTypes.array,
+	addCar: PropTypes.func
 }
 
 // ownProp: my old prop
@@ -48,4 +51,8 @@ const mapStateToCar = (state, ownProps) => ({
 	cars: state.cars.cars,
 })
 
-export default connect(mapStateToCar)(Car)
+const mapDispatchToProps = (dispatch) => ({
+	addCar: (car) => dispatch(addCar(car))
+})
+
+export default connect(mapStateToCar, mapDispatchToProps)(Car)

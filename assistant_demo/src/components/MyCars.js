@@ -21,7 +21,7 @@ const MyCars = ({ cars }) => {
 	);
 	return (
 		<div className="container">
-			<h4 className="center">Kho xe của tôi</h4>
+			<h4 className="center blue-text text-darken-2">Kho xe của tôi</h4>
 			<div className="flex-row">
 				{carList}
 			</div>

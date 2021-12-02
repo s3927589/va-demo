@@ -9,7 +9,10 @@ import MySpeechRecognition from './SpeechRecognition'
 import classes from '../chatbot_js_model/classes.json'
 import words from '../chatbot_js_model/words.json'
 import intents_raw from '../chatbot_js_model/intents.json'
+import intents_audio_raw from '../chatbot_js_model/intents_audio.json'
+import car_config from '../config/CarConfig.json'
 import { updateCommand } from '../redux/actionCreators'
+import  { audioFiles } from '../config/AudioConfig'
 
 import { KHONG_TIM_THAY, THEM_O_TO, THONG_TIN_O_TO, GIOI_THIEU } from './TaskConfig'
 import './chatbot.css'
@@ -17,6 +20,7 @@ import './chatbot.css'
 const server = "http://localhost:5000"
 const ignore_letters = ["?", ",", ".", "!"]
 const intents = intents_raw["intents"]
+const intents_audio = intents_audio_raw["intents"]
 
 let timecount = (new Date()).getTime()
 
@@ -24,7 +28,8 @@ class ChatBot extends Component {
 	state = {
 		model: null,
 		loadModel: false,
-		response: ""
+		response: "",
+		myCars: car_config.cars
 	}
 
 	componentDidMount() {
@@ -38,25 +43,70 @@ class ChatBot extends Component {
 		}
 	}
 
-	readText = (text, label) => {
+	readText = (text, label, audioName) => {
 		let update = true
 		if (label === KHONG_TIM_THAY) {
 			update = false
 			text = "Ô tô bạn cần tìm không có trong hệ thống"
+			audioName = "khong_tim_thay"
 		}
 
-		axios.post( `${server}/speak`, { text })
-			.then(res => {
-				const audio = new Audio('data:audio/ogg;base64,' + res.data)
-				audio.play()
-				if (update)
-					this.props.updateCommand(label)
-				if (label === GIOI_THIEU) {
-					text = "Công ty trách nhiệm hữu hạn ô tô Isuzu việt nam … xe ô tô"
-				}
-				this.setState({response: text})
-			})
-			.catch(console.log)
+		// console.log(document.currentScript.src)
+		// const audio = new Audio("./audio/" + audioName + ".m4a")
+		console.log(audioFiles)
+		console.log(audioName)
+		console.log(audioFiles[audioName])
+		const audio = new Audio(audioFiles[audioName])
+		audio.play()
+		if (update)
+			this.props.updateCommand(label)
+		if (label === GIOI_THIEU) {
+			text = "Hyundai Đại Lý Uỷ Quyền Chính Thức ..."
+		}
+		this.setState({response: text})
+		// axios.post( `${server}/speak`, { text })
+		// 	.then(res => {
+		// 		const audio = new Audio('data:audio/ogg;base64,' + res.data)
+		// 		audio.play()
+		// 		if (update)
+		// 			this.props.updateCommand(label)
+		// 		if (label === GIOI_THIEU) {
+		// 			text = "Công ty trách nhiệm hữu hạn ô tô Isuzu việt nam … xe ô tô"
+		// 		}
+		// 		this.setState({response: text})
+		// 	})
+		// 	.catch(console.log)
+	}
+
+	getCarName = (id) => {
+		let car;
+		for (let i = 0; i < this.state.myCars.length; i++) {
+			car = this.state.myCars[i];
+			if (car.id === id) {
+				return car.name
+			}
+		}
+
+		return "này"
+	}
+
+	checkName = (text, name) => {
+		let wordList = name.split(' ')
+		let regexList = [new RegExp(name, "gi")]
+		for (let i = 0; i < wordList.length; i++) {
+			if (wordList[i] === "Hyundai")
+				continue
+
+			regexList.push(new RegExp(wordList[i], "gi"))
+		}
+
+		let score = 0;
+		for (let i = 0; i < regexList.length; i++) {
+			if (text.match(regexList[i]))
+				score++;
+		}
+
+		return score;
 	}
 
 	preprocess = (text) => {
@@ -103,6 +153,23 @@ class ChatBot extends Component {
 		return "Tôi không nghe rõ. Bạn có thể nói lại được không?"
 	}
 
+	getAudioName = (label) => {
+		let intent = null;
+		let res_list = null;
+		let index = 0;
+		for (let i = 0; i < intents_audio.length; i++) {
+			intent = intents_audio[i]
+			if (intent.tag !== label)
+				continue;
+
+			res_list = intent.responses
+			index = Math.floor(Math.random() * res_list.length)
+			return res_list[index]
+		}
+
+		return "Tôi không nghe rõ. Bạn có thể nói lại được không?"
+	}
+
 	stringToSlug = (str) => {
 		// remove accents
 		var from = "àáãảạăằắẳẵặâầấẩẫậèéẻẽẹêềếểễệđùúủũụưừứửữựòóỏõọôồốổỗộơờớởỡợìíỉĩịäëïîöüûñçýỳỹỵỷ",
@@ -137,8 +204,9 @@ class ChatBot extends Component {
 
 		let label = "not_belong"
 		let response = "Tôi không nghe rõ. Bạn có thể nói lại được không?"
+		let audioName = "not_belong"
 		if (belong) {
-			const dataTensor = tf.tensor2d(data, [data.length, 36]);
+			const dataTensor = tf.tensor2d(data, [data.length, words.length]);
 
 			// predict
 			const pred = this.state.model.predict(dataTensor)
@@ -147,24 +215,40 @@ class ChatBot extends Component {
 			const index = parseInt(pred.argMax(-1).dataSync()[0])
 			label = classes[index]
 			response = this.getResponse(label)
+			audioName = this.getAudioName(label)
 		}
 
 		if (label === THONG_TIN_O_TO || label === THEM_O_TO) {
 			text = this.stringToSlug(text).toLowerCase()
-			if (text.match(/ben/gi)) {
-				label += "-1"
-				response += "Ben"
-			} else if (text.match(/dong lanh/gi) || text.match(/dong/gi)) {
-				label += "-2"
-				response += "Đông Lạnh"
-			} else if (text.match(/xang dau/gi) || text.match(/xang/gi)) {
-				label += "-3"
-				response += "Bồn Xăng Dầu"
-			} else if (text.match(/mui bat/gi) || text.match(/mui/gi)) {
-				label += "-4"
-				response += "Thùng Mui Bạt"
+			let car, chosenCar, score;
+			let maxScore = 0;
+			for (let i = 0; i < this.state.myCars.length; i++) {
+				car = this.state.myCars[i];
+				score = this.checkName(text, car.name)
+				if (score > maxScore) {
+					chosenCar = car;
+					maxScore = score;
+				}
+			}
+
+			if (maxScore == 0) {
+				if (!text.match(/hyundai/gi) && label === THEM_O_TO) {
+					let id = window.location.pathname.split('/')[1]
+					console.log(id)
+					if (/^\d+$/.test(id)) {
+						label += "-" + id
+						response += this.getCarName(id)
+						audioName += "-" + id
+					} else {
+						label = KHONG_TIM_THAY
+					}
+				} else {
+					label = KHONG_TIM_THAY
+				}
 			} else {
-				label = KHONG_TIM_THAY
+				label += "-" + chosenCar.id
+				response += chosenCar.name
+				audioName += "-" + chosenCar.id
 			}
 
 			if (label.match(new RegExp(THONG_TIN_O_TO, "gi")))
@@ -173,7 +257,7 @@ class ChatBot extends Component {
 				response += " vào kho xe của bạn"
 		}
 
-		this.readText(response, label)
+		this.readText(response, label, audioName)
 	}
 
 	render() {

@@ -1,4 +1,5 @@
 export const MY_CAR = 'MY_CAR'
+export const IN_CAR = 'IN_CAR'
 export const COMMAND = 'COMMAND'
 
 export const updateCommand = (commandType) => {
@@ -30,6 +31,30 @@ export const addCar = (car) => {
 		dispatch({
 			type: MY_CAR,
 			payload: car
+		})
+	}
+}
+
+export const enableInCar = (id) => {
+	return (dispatch) => {
+		dispatch({
+			type: IN_CAR,
+			payload: {
+				isInCar: true,
+				inCarId: id
+			}
+		})
+	}
+}
+
+export const disableIn = (id) => {
+	return (dispatch) => {
+		dispatch({
+			type: IN_CAR,
+			payload: {
+				isInCar: true,
+				inCarId: id
+			}
 		})
 	}
 }
